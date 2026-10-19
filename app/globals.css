@@ -1,26 +1,228 @@
 @import "tailwindcss";
 
+/* ===========================================================================
+   Shams Glass design tokens
+   Tailwind v4 generates utilities (bg-navy, text-corporate, border-glass, ...)
+   from the `@theme` block below.
+   ========================================================================== */
+@theme {
+  /* Brand palette */
+  --color-navy: #102d50;
+  --color-navy-700: #163862;
+  --color-navy-900: #0b1e38;
+  --color-corporate: #1769aa;
+  --color-corporate-600: #155f9c;
+  --color-corporate-700: #114f82;
+  --color-glass: #dceffc;
+  --color-glass-200: #c5e6f8;
+  --color-glass-100: #eef7fd;
+  --color-canvas: #f5f8fc;
+  --color-ink: #172b43;
+  --color-ink-soft: #41567a;
+  --color-ink-muted: #6b7f9e;
+  --color-hairline: #e3ecf6;
+
+  /* Typography */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo,
+    monospace;
+
+  /* Easing + durations (shared with framer-motion) */
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===========================================================================
+   Base styles
+   ========================================================================== */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #172b43;
+  --selection: #dceffc;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Remove the default dark-mode overrides that came with the scaffold; the
+   Shams Glass site is a light, premium light-mode experience. */
+
+::selection {
+  background: var(--color-glass);
+  color: var(--color-navy);
+}
+
+/* Visible, on-brand focus indicators for keyboard users. */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-corporate);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Refined default heading tracking for the editorial feel. */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Subtle scrollbar for a cleaner look on desktop. */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cdd9e8;
+    border: 3px solid var(--color-background);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b3c3d8;
+  }
+}
+
+/* ===========================================================================
+   Utility helpers
+   ========================================================================== */
+
+/* Centered, max-width page container used by <Container />. */
+.sg-container {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 80rem; /* 1280px */
+  padding-inline: 1.25rem;
+}
+@media (min-width: 768px) {
+  .sg-container {
+    padding-inline: 2rem;
+  }
+}
+@media (min-width: 1280px) {
+  .sg-container {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Small uppercase eyebrow label used across sections. */
+.sg-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-corporate);
+}
+
+/* Subtle glass-sheen background for hero overlays / logo accents. */
+.sg-sheen {
+  background: linear-gradient(
+    135deg,
+    rgba(220, 239, 252, 0.18) 0%,
+    rgba(220, 239, 252, 0.04) 40%,
+    transparent 70%
+  );
+}
+
+/* Navy gradient used in the footer + admin shell. */
+.sg-navy-gradient {
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(23, 105, 170, 0.25), transparent 60%),
+    linear-gradient(180deg, #102d50 0%, #0b1e38 100%);
+}
+
+/* Card hover lift + image zoom container. */
+.sg-card {
+  transition:
+    transform 0.5s var(--ease-lux),
+    box-shadow 0.5s var(--ease-lux),
+    border-color 0.3s var(--ease-smooth);
+}
+.sg-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px -24px rgba(16, 45, 80, 0.28);
+  border-color: var(--color-glass-200);
+}
+.sg-zoom-img {
+  transition: transform 1.1s var(--ease-lux);
+}
+.sg-card:hover .sg-zoom-img,
+.sg-card:focus-within .sg-zoom-img {
+  transform: scale(1.06);
+}
+
+/* Skeleton shimmer used in loading states. */
+.sg-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-hairline);
+}
+.sg-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.65),
+    transparent
+  );
+  animation: sg-shimmer 1.4s infinite;
+}
+@keyframes sg-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ===========================================================================
+   Reduced motion: disable non-essential animation and smooth scroll.
+   framer-motion's `useReducedMotion` handles JS-driven motion; this covers
+   CSS transitions/animations.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .sg-zoom-img,
+  .sg-card {
+    transition: none;
+  }
+  .sg-card:hover {
+    transform: none;
+  }
+  .sg-skeleton::after {
+    animation: none;
+    opacity: 0;
+  }
 }
