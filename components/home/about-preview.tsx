@@ -1,5 +1,4 @@
 import { ArrowRight } from "lucide-react";
-import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/motion";
@@ -27,16 +26,14 @@ export function AboutPreview() {
     <section className="py-20 md:py-28 bg-white">
       <Container>
         <div className="grid gap-12 lg:gap-16 lg:grid-cols-2 lg:items-center">
-          {/* Image */}
           <Reveal className="order-1 lg:order-none">
             <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-canvas">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={ABOUT_IMAGE}
                 alt="Modern interior with floor-to-ceiling glazing and aluminium framing"
-                fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover"
-                quality={80}
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-navy/30 to-transparent" aria-hidden />
             </div>

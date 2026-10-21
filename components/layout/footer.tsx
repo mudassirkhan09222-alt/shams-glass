@@ -7,7 +7,6 @@ import {
   BUSINESS,
   NAV_LINKS,
   mailLink,
-  telLink,
   whatsappLink,
 } from "@/lib/config/site";
 import { getPublicCategories } from "@/lib/products/queries";
@@ -27,7 +26,6 @@ export async function Footer() {
         }));
 
   const whatsapp = whatsappLink();
-  const phone = telLink(BUSINESS.phone);
   const email = mailLink(BUSINESS.email);
   const year = new Date().getFullYear();
 
@@ -98,16 +96,23 @@ export async function Footer() {
               Get in touch
             </h3>
             <ul className="mt-5 space-y-3.5 text-sm">
-              {phone ? (
-                <li>
-                  <a
-                    href={phone}
-                    className="flex items-start gap-3 text-white/75 hover:text-white transition-colors"
-                  >
-                    <Phone className="h-4 w-4 mt-0.5 text-glass shrink-0" aria-hidden />
-                    <span>{BUSINESS.phone}</span>
-                  </a>
-                </li>
+              {BUSINESS.phone ? (
+                /* Support comma-separated numbers e.g. "0333-2317102, 0312-8551171" */
+                BUSINESS.phone.split(",").map((num) => {
+                  const clean = num.trim();
+                  const digits = clean.replace(/[^\d+]/g, "");
+                  return (
+                    <li key={clean}>
+                      <a
+                        href={`tel:${digits}`}
+                        className="flex items-start gap-3 text-white/75 hover:text-white transition-colors"
+                      >
+                        <Phone className="h-4 w-4 mt-0.5 text-glass shrink-0" aria-hidden />
+                        <span>{clean}</span>
+                      </a>
+                    </li>
+                  );
+                })
               ) : null}
               {email ? (
                 <li>

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Gem, Ruler, Headphones } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/motion";
@@ -57,13 +56,12 @@ export default function AboutPage() {
           <div className="grid gap-10 lg:gap-14 lg:grid-cols-2 lg:items-center">
             <Reveal>
               <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-canvas">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={ABOUT_IMAGE}
                   alt="Contemporary interior with extensive glazing and aluminium framing"
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover"
-                  quality={80}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-navy/25 to-transparent" aria-hidden />
               </div>

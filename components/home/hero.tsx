@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useRef } from "react";
 import {
   motion,
@@ -18,7 +17,7 @@ import { Button } from "@/components/ui/button";
  * legible even while the image loads or if the remote source is unavailable.
  */
 const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1486406146926-c627a42ad1c2?auto=format&fit=crop&w=2400&q=80";
+  "https://images.unsplash.com/photo-1545324424-1b6400c43a0c?auto=format&fit=crop&w=2400&q=80";
 
 const TRUST_HIGHLIGHTS = [
   "Quality-Focused Solutions",
@@ -59,20 +58,16 @@ export function Hero() {
       aria-label="Shams Glass introduction"
       className="relative min-h-[100svh] w-full overflow-hidden bg-navy-900"
     >
-      {/* Background image with parallax. The navy base + gradient keep copy
-          legible if the remote image is slow or unavailable. */}
+      {/* Background image with parallax */}
       <motion.div
         style={prefersReduced ? undefined : { y: imageY }}
         className="absolute inset-0"
       >
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={HERO_IMAGE}
           alt="Modern glass and aluminium architectural facade"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-          quality={80}
+          className="absolute inset-0 w-full h-full object-cover"
         />
       </motion.div>
 

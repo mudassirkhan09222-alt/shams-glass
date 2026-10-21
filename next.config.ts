@@ -39,6 +39,18 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
+      // Reliable placeholder images for the showcase section.
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+        pathname: "/**",
+      },
+      // Picsum CDN delivery host.
+      {
+        protocol: "https",
+        hostname: "fastly.picsum.photos",
+        pathname: "/**",
+      },
       // Public product imagery stored in Supabase Storage (when configured).
       ...(supabaseHostname
         ? [
