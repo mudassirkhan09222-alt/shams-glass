@@ -19,9 +19,9 @@ export function Logo({
   href?: string | null;
   showTagline?: boolean;
 }) {
-  // Light variant (footer / login) → slightly larger to read well on dark bg
-  const height = variant === "light" ? 52 : 44;
-  const width  = variant === "light" ? 140 : 120;
+  // navbar (dark) → small; footer/login (light) → slightly larger
+  const height = variant === "light" ? 46 : 28;
+  const width  = variant === "light" ? 124 : 76;
 
   const content = (
     <span className={`inline-flex items-center ${className}`}>

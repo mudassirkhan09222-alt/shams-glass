@@ -5,17 +5,15 @@ import { useState } from "react";
 
 type Props = Omit<ImageProps, "src" | "onError"> & {
   src: string | null | undefined;
-  /** Tailwind classes applied to the fallback block. */
   fallbackClassName?: string;
-  /** Optional label shown inside the fallback. */
   fallbackLabel?: string;
 };
 
-/**
- * Next.js Image with a graceful on-brand fallback when the remote source fails
- * to load or when `src` is empty. The fallback is a tinted block with the
- * glass mark, so the layout never shows a broken-image icon.
- */
+/** Returns true for Supabase Storage URLs — use native <img> to bypass Next.js optimiser domain checks. */
+function isSupabaseUrl(src: string): boolean {
+  return src.includes(".supabase.co/storage/");
+}
+
 export function ImageWithFallback({
   src,
   alt,
@@ -43,6 +41,24 @@ export function ImageWithFallback({
           ) : null}
         </div>
       </div>
+    );
+  }
+
+  /* Supabase Storage → use native <img> so next/image domain whitelist is bypassed */
+  if (isSupabaseUrl(src)) {
+    // Extract positional props that only apply to next/image
+    const { fill, sizes, quality, priority, placeholder, blurDataURL, ...imgRest } = rest as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={typeof alt === "string" ? alt : ""}
+        className={className}
+        onError={() => setFailed(true)}
+        loading={priority ? "eager" : "lazy"}
+        referrerPolicy="no-referrer"
+        {...imgRest}
+      />
     );
   }
 

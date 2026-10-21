@@ -51,8 +51,14 @@ const nextConfig: NextConfig = {
         hostname: "fastly.picsum.photos",
         pathname: "/**",
       },
-      // Public product imagery stored in Supabase Storage (when configured).
-      ...(supabaseHostname
+      // Public product imagery stored in Supabase Storage.
+      // Hostname hardcoded + derived from env — both covered.
+      {
+        protocol: "https" as const,
+        hostname: "zxedqtljshktcrlhcgqj.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+      ...(supabaseHostname && supabaseHostname !== "zxedqtljshktcrlhcgqj.supabase.co"
         ? [
             {
               protocol: "https" as const,

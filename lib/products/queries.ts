@@ -18,10 +18,13 @@ import { storagePublicUrl } from "@/lib/utils";
 /** Public Supabase Storage bucket for product imagery. */
 export const PRODUCT_IMAGES_BUCKET = "product-images";
 
-/** Helper: resolve a storage path into a public URL. */
+/** Resolve storage path to public URL. Path is cleaned of any accidental prefixes. */
 function publicUrlFor(storagePath: string): string {
   const base = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/\/$/, "");
-  return storagePublicUrl(base, PRODUCT_IMAGES_BUCKET, storagePath);
+  const cleanPath = storagePath
+    .replace(/^\/+/, "")
+    .replace(new RegExp(`^${PRODUCT_IMAGES_BUCKET}\\/`), "");
+  return `${base}/storage/v1/object/public/${PRODUCT_IMAGES_BUCKET}/${cleanPath}`;
 }
 
 /** Map a raw product_images row into our typed ProductImage. */

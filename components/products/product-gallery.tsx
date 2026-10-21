@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import type { ProductImage } from "@/types/database";
-import { ImageWithFallback } from "@/components/ui/image-with-fallback";
 import { cn } from "@/lib/utils";
 
 export function ProductGallery({
@@ -35,16 +34,14 @@ export function ProductGallery({
 
   if (count === 0) {
     return (
-      <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-hairline">
-        <ImageWithFallback
-          src={null}
-          alt={productName}
-          fill
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          className="object-cover"
-          fallbackClassName="w-full h-full"
-          fallbackLabel="No image available"
-        />
+      <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-hairline bg-canvas flex items-center justify-center text-ink-muted">
+        <div className="flex flex-col items-center gap-2 opacity-60">
+          <svg width="48" height="48" viewBox="0 0 32 32" fill="none">
+            <rect x="3" y="3" width="18" height="26" rx="3" fill="currentColor" opacity="0.15" />
+            <rect x="11" y="3" width="18" height="26" rx="3" fill="currentColor" opacity="0.28" />
+          </svg>
+          <span className="text-xs">No image available</span>
+        </div>
       </div>
     );
   }
@@ -61,14 +58,13 @@ export function ProductGallery({
         aria-label={`${productName} image gallery`}
         onKeyDown={onKeyDown}
       >
-        <ImageWithFallback
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={current.public_url}
           alt={current.alt_text || productName}
-          fill
-          priority
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          className="object-cover"
-          fallbackClassName="w-full h-full"
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+          referrerPolicy="no-referrer"
         />
         <div className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-navy/70 px-3 py-1 text-xs text-white backdrop-blur-sm">
           <Maximize2 className="h-3.5 w-3.5" aria-hidden />
@@ -112,13 +108,13 @@ export function ProductGallery({
                     : "border-hairline hover:border-glass-200",
                 )}
               >
-                <ImageWithFallback
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={img.public_url}
                   alt={img.alt_text || `${productName} thumbnail ${i + 1}`}
-                  fill
-                  sizes="120px"
-                  className="object-cover"
-                  fallbackClassName="w-full h-full"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
                 />
               </button>
             </li>

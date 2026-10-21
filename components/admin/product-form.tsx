@@ -102,8 +102,13 @@ export function ProductForm({
         if (isEdit) {
           router.push("/admin/dashboard/products");
         } else {
-          const data = result.data as { slug: string } | undefined;
-          router.push(data ? `/admin/dashboard/products/${data.slug ?? ""}/edit` : "/admin/dashboard/products");
+          // After create, redirect to edit page using the product UUID (not slug)
+          const created = result.data as { id: string; slug: string } | undefined;
+          router.push(
+            created?.id
+              ? `/admin/dashboard/products/${created.id}/edit`
+              : "/admin/dashboard/products",
+          );
         }
         router.refresh();
       } else {
